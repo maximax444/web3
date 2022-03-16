@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ace="http://www.icefaces.org/icefaces/components"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="WEB-INF/templates/master.xhtml">
+
+    <ui:define name="head" class="header">
+        <h:outputStylesheet library="css" name="style.min.css"/>
+    </ui:define>
+
+    <ui:define name="main">
+        <main class="container">
+            <div class="main__wrap">
+                <div class="main__img">
+                    <ui:include src="templates/canvas.html"/>
+                </div>
+                <h:form id="newPointForm" class="main__form">
+                    <div>
+                        <h:outputLabel value="X"/>
+                        <ace:sliderEntry axis="x" min="-5" max="5" id="x" onSlideEnd="changeXXX()" showLabels="true" stepPercent="10"/>
+
+                        <div id="wrong_field_X" class="wrong"></div>
+                    </div>
+                    <h:panelGroup styleClass="input_form_hidden_x">
+                        <h:inputHidden value="#{pointsBean.newPoint.x}">
+                        </h:inputHidden>
+                    </h:panelGroup>
+
+
+                    <div>
+                        <h:outputLabel styleClass="input-form_label_y" for="y" value="Y"/>
+                        <h:inputText styleClass="input-form_text input-form_text_y" id="y"
+                                     value="#{pointsBean.newPoint.y}">
+                        </h:inputText>
+                        <div id="wrong_field_Y" class="wrong"></div>
+                    </div>
+
+                    <div>
+                        <h:outputLabel styleClass="input-form_label input-form_label_r" value="R"/>
+                        <ul>
+                            <li>
+                                <h:commandButton styleClass="input_form_button_r" id="r-button1"
+                                                 type="button" value="1"/>
+                            </li>
+                            <li>
+                                <h:commandButton styleClass="input_form_button_r" id="r-button2"
+                                                 type="button" value="2"/>
+                            </li>
+                            <li>
+                                <h:commandButton styleClass="input_form_button_r r-button3  button_r_clicked"
+                                                 id="r-button3"
+                                                 type="button" value="3"/>
+                            </li>
+
+                            <li>
+                                <h:commandButton styleClass="input_form_button_r" id="r-button4"
+                                                 type="button" value="4"/>
+                            </li>
+                            <li>
+                                <h:commandButton styleClass="input_form_button_r" id="r-button5"
+                                                 type="button" value="5"/>
+                            </li>
+                        </ul>
+                        <div id="wrong_field_R" class="wrong"></div>
+                    </div>
+
+                    <h:panelGroup styleClass="input_form_hidden_r">
+                        <h:inputHidden value="#{pointsBean.newPoint.r}">
+                        </h:inputHidden>
+                    </h:panelGroup>
+                    <div class="input_form_buttons_container">
+                        <h:commandButton value="Отправить"
+                                         styleClass="submit input_form_control_buttons_button_submit"
+                                         action="#{pointsBean.addEntry()}">
+                            <f:ajax execute="newPointForm" render="pointTable"/>
+                        </h:commandButton>
+                        <h:commandButton
+                                styleClass="input_form_control_buttons_button_clear"
+                                value="Очистить" action="#{pointsBean.clearEntry()}" immediate="true">
+                            <f:ajax execute="newPointForm" render="pointTable"/>
+                        </h:commandButton>
+                    </div>
+                </h:form>
+
+            </div>
+
+            <br/> <br/> <br/>
+
+
+            <section>
+                <div class="result-table_container">
+                    <h:panelGroup id="pointTable" class="main__table">
+                        <h:dataTable styleClass="result_table" value="#{pointsBean.entries}" var="point">
+                            <h:column headerClass="variables the_X">
+                                <f:facet name="header">X</f:facet>
+                                <h:outputText value="#{point.x}"/>
+                            </h:column>
+                            <h:column headerClass="variables the_Y">
+                                <f:facet name="header">Y</f:facet>
+                                <h:outputText value="#{point.y}"/>
+                            </h:column>
+                            <h:column headerClass="variables the_R">
+                                <f:facet name="header">R</f:facet>
+                                <h:outputText value="#{point.r}"/>
+                            </h:column>
+                            <h:column headerClass="variables">
+                                <f:facet name="header">Результат</f:facet>
+                                <h:outputText value="#{point.hitResult}"/>
+                            </h:column>
+                        </h:dataTable>
+                    </h:panelGroup>
+                </div>
+                <div class="main-menu">
+                    <h:link outcome="goIndex">
+                        Бежать отсюда
+                    </h:link>
+                </div>
+            </section>
+        </main>
+
+        <h:outputScript library="js" name="main.js"/>
+        <h:outputScript library="js" name="canvas.js"/>
+    </ui:define>
+
+</ui:composition>
+
+</html>
